@@ -4,7 +4,8 @@ desktop.setAttribute('data-context', 'desktop')
 const desktopContextMenu = [['Упорядочить значки', 'Обновить'], ['Вставить', 'Вставить ярлык'], ['Создать'], ['Свойства']]
 let selectedItem, highlight
 let cursordownX, cursordownY, highlightPointX, highlightPointY
-let screenOffsetX, screenOffsetY
+let screenOffsetX = (window.innerWidth - desktop.offsetWidth)/2,
+    screenOffsetY = (window.innerHeight - desktop.offsetHeight)/2
 
 
 
@@ -32,28 +33,28 @@ const moveAt = (offsetX, offsetY) => {
 
 }
 const mouseMoveHandler = (event) => {
-  moveAt(event.offsetX, event.offsetY)
+  console.dir(event)
+  moveAt(event.pageX - screenOffsetX, event.pageY -screenOffsetY)
 
 }
 const mousedownHandler = event => {
   selectedItem = event.target.closest('.folder')
   selectedItem.ondragstart = () => false
-  cursordownX = event.offsetX - selectedItem.offsetLeft
-  cursordownY = event.offsetY - selectedItem.offsetTop
-  console.dir(selectedItem)
+  cursordownX = event.pageX - screenOffsetX - selectedItem.offsetLeft
+  cursordownY = event.pageY - screenOffsetY - selectedItem.offsetTop
+
 
   event.target.addEventListener('mouseup', mouseUpHandler)
   desktop.addEventListener('mousemove', mouseMoveHandler)
   clickFoldersHandler(event)
 }
 const highlightHandler = event => {
+
   if (event.target.id === 'desktop') {
 
     highlight = document.createElement('div')
     highlight.classList.add('highlight')
-    desktop.append(highlight)
 
-    console.log(event)
     highlightPointX = event.offsetX
     highlightPointY = event.offsetY
     screenOffsetX = event.pageX - event.offsetX
@@ -62,62 +63,59 @@ const highlightHandler = event => {
     highlight.style.left = highlightPointX
     highlight.style.top = highlightPointY
 
-    console.log('x point ', highlightPointX)
-    console.log('y point ', highlightPointY)
-    //console.dir(screenOffset)
-
+    desktop.append(highlight)
     desktop.addEventListener('mousemove', highlightMoveHandler)
-    //desktop.addEventListener('mouseup', highlightDelete)
+    desktop.addEventListener('mouseup', highlightDelete)
   }
 }
 
 const highlightMoveHandler = event => {
 
-    console.dir(event)
-    if (event.target.id === 'desktop') {
-      highlight.style.width = Math.abs((event.pageX - screenOffsetX) - highlightPointX) + 'px'
-      highlight.style.height = Math.abs((event.pageY - screenOffsetX) - highlightPointY) + 'px'
 
-      // hide highlight line
-      /*if (event.offsetX === highlightPointX || event.offsetY === highlightPointY) {
-        highlight.style.borderColor = 'rgba(0,0,0,0)'
-      } else {
-        highlight.style.borderColor = '#333'
-      }*/
-      // fix highlight point depending the side
-      if ((event.pageX - screenOffsetX) < highlightPointX && (event.pageY - screenOffsetY) < highlightPointY) {
-        highlight.style.left = (event.pageX - screenOffsetX) + 'px'
-        highlight.style.right = highlightPointX + 'px'
-        highlight.style.top = (event.pageY - screenOffsetY) + 'px'
-        highlight.style.bottom = highlightPointY + 'px'
-      }
-      /*
 
-              } else if ((event.pageX - screenOffsetX) < highlightPointX && (event.pageY - screenOffsetY) > highlightPointY) {
-                highlight.style.left = (event.pageX - screenOffsetX) + 'px'
-                highlight.style.right = highlightPointX + 'px'
-                highlight.style.top = highlightPointY + 'px'
-                highlight.style.bottom = (event.pageY - screenOffsetY) + 'px'
-              } else if ((event.pageX - screenOffsetX) > highlightPointX && (event.pageY - screenOffsetY) < highlightPointY) {
-                highlight.style.left = highlightPointX + 'px'
-                highlight.style.right = (event.pageX - screenOffsetX) + 'px'
-                highlight.style.top = (event.pageY - screenOffsetY) + 'px'
-                highlight.style.bottom = highlightPointY + 'px'
-              } else if ((event.pageX - screenOffsetX) > highlightPointX && (event.pageY - screenOffsetY) > highlightPointY) {
-                highlight.style.left = highlightPointX + 'px'
-                highlight.style.right = (event.pageX - screenOffsetX) + 'px'
-                highlight.style.top = highlightPointY + 'px'
-                highlight.style.bottom = (event.pageY - screenOffsetY) + 'px'
-              }
-      */
+  //if (event.target.id === 'desktop') {
+  highlight.style.width = Math.abs((event.pageX - screenOffsetX) - highlightPointX) + 'px'
+  highlight.style.height = Math.abs((event.pageY - screenOffsetY) - highlightPointY) + 'px'
 
-    }
+  // hide highlight line
+  if (event.offsetX === highlightPointX || event.offsetY === highlightPointY) {
+    highlight.style.borderColor = 'rgba(0,0,0,0)'
+  } else {
+    highlight.style.borderColor = '#333'
+  }
+  // fix highlight point depending the side
+  if ((event.pageX - screenOffsetX) < highlightPointX && (event.pageY - screenOffsetY) < highlightPointY) {
+    highlight.style.left = (event.pageX - screenOffsetX) + 'px'
+    highlight.style.right = highlightPointX + 'px'
+    highlight.style.top = (event.pageY - screenOffsetY) + 'px'
+    highlight.style.bottom = highlightPointY + 'px'
+
+
+  } else if ((event.pageX - screenOffsetX) < highlightPointX && (event.pageY - screenOffsetY) > highlightPointY) {
+    highlight.style.left = (event.pageX - screenOffsetX) + 'px'
+    highlight.style.right = highlightPointX + 'px'
+    highlight.style.top = highlightPointY + 'px'
+    highlight.style.bottom = (event.pageY - screenOffsetY) + 'px'
+  } else if ((event.pageX - screenOffsetX) > highlightPointX && (event.pageY - screenOffsetY) < highlightPointY) {
+    highlight.style.left = highlightPointX + 'px'
+    highlight.style.right = (event.pageX - screenOffsetX) + 'px'
+    highlight.style.top = (event.pageY - screenOffsetY) + 'px'
+    highlight.style.bottom = highlightPointY + 'px'
+  } else if ((event.pageX - screenOffsetX) > highlightPointX && (event.pageY - screenOffsetY) > highlightPointY) {
+    highlight.style.left = highlightPointX + 'px'
+    highlight.style.right = (event.pageX - screenOffsetX) + 'px'
+    highlight.style.top = highlightPointY + 'px'
+    highlight.style.bottom = (event.pageY - screenOffsetY) + 'px'
+  }
+
+
+  //}
 
 }
 
 const highlightDelete = event => {
-  //desktop.querySelector('.highlight').remove()
-  //desktop.removeEventListener('mouseup', highlightDelete)
+  desktop.querySelector('.highlight').remove()
+  desktop.removeEventListener('mouseup', highlightDelete)
 }
 const clickWindowHandler = event => {
   if (event.target.id === 'desktop') {
@@ -161,10 +159,14 @@ const deleteContextMenu = () => {
 }
 
 
-//folders.forEach(folder => folder.addEventListener('mousedown', mousedownHandler))
-//folders.forEach(folder => folder.addEventListener('click', clickFoldersHandler));
-//folders.forEach(folder => folder.addEventListener('dblclick', dblclickFoldersHandler));
+folders.forEach(folder => folder.addEventListener('mousedown', mousedownHandler))
+folders.forEach(folder => folder.addEventListener('click', clickFoldersHandler));
+folders.forEach(folder => folder.addEventListener('dblclick', dblclickFoldersHandler));
 desktop.addEventListener('mousedown', highlightHandler)
-//document.addEventListener('click', clickWindowHandler)
-//document.addEventListener('contextmenu', contextMenuHandler)
+document.addEventListener('click', clickWindowHandler)
+document.addEventListener('contextmenu', contextMenuHandler)
 
+
+/*function resOut(res1, res2) {
+  desktop.querySelector('.info').textContent = res1.toString() + '\n\n' + res2.toString();
+}*/

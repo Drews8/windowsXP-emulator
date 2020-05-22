@@ -128,3 +128,13 @@ body {
 .context li + li {
    /* border-top: 1px solid #333;*/
 }
+
+.info {
+    width: 100px;
+    height: 100px;
+    right: 0;
+    border: 1px solid #000;
+    position: absolute;
+    background-color: #fff;
+
+}
