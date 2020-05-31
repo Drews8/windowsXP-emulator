@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="63990a3b-03d6-4d79-b88c-7fb0ad14db0c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/reset.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/icons8-folder-100.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/icons8-opened-folder-100.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/style.css" afterDir="false" />
@@ -55,7 +54,7 @@
       <workItem from="1590050208230" duration="29467000" />
       <workItem from="1590140487468" duration="449000" />
       <workItem from="1590158606316" duration="14052000" />
-      <workItem from="1590940368852" duration="2741000" />
+      <workItem from="1590940368852" duration="7296000" />
     </task>
     <servers />
   </component>
@@ -66,9 +65,9 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="2332" y="243" key="run.anything.popup" timestamp="1590941410242">
+    <state x="2332" y="243" key="run.anything.popup" timestamp="1590944069856">
       <screen x="1920" y="27" width="1680" height="1010" />
     </state>
-    <state x="2332" y="243" key="run.anything.popup/0.0.1920.1040/1920.27.1680.1010@1920.27.1680.1010" timestamp="1590941410242" />
+    <state x="2332" y="243" key="run.anything.popup/0.0.1920.1040/1920.27.1680.1010@1920.27.1680.1010" timestamp="1590944069856" />
   </component>
 </project>

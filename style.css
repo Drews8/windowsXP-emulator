@@ -28,6 +28,7 @@ body {
     position: relative;
     background-image: url('img/wallpaper.jpg');
     background-size: cover;
+    display: inline-flex;
 }
 
 /*.folder:hover {
@@ -44,7 +45,7 @@ body {
     border: 1px solid rgba(128, 166, 167, 0);
 
 
-    display: inline-flex;
+    display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
@@ -74,7 +75,24 @@ body {
 .folder.highlighted > span {
     background-color: #316ac4
 }
-
+input.rename  .folder{
+    filter: none;
+}
+input.rename{
+    /*display: block;*/
+    width: 50px;
+    background-color: #fff;
+    border: 1px solid #000;
+    border-radius: 0;
+    padding: 1px 4px;
+}
+input.rename::selection{
+    color: #fff;
+    background-color: #316ac4;
+    font-family: 'Segoe UI', serif;
+    font-weight: 300;
+    font-size: 12px;
+}
 .folder > span {
     display: block;
     text-align: center;

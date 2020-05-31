@@ -28,9 +28,16 @@ const clickFoldersHandler = event => {
 
 }
 const renameHandler = event => {
-  //console.dir(event)
-  if(event.target.tagName === 'span'){
-    alert('dick')
+
+  let chosenTitle = event.target
+  if(chosenTitle.tagName === 'SPAN'){
+
+    chosenTitle.outerHTML = `<input value='${chosenTitle.innerHTML}' class='rename' autofocus>`
+    let chosenInput = document.querySelector('.rename')
+    chosenInput.select()
+
+
+   // console.log(chosenItem.outerHTML)
   }
 }
 const dblclickFoldersHandler = event => {
