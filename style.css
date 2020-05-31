@@ -37,7 +37,6 @@ body {
 
 .folder {
     position: relative;
-    display: inline-block;
     /*left: 100px;
     top: 100px;*/
     width: 80px;
@@ -45,7 +44,7 @@ body {
     border: 1px solid rgba(128, 166, 167, 0);
 
 
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
@@ -62,7 +61,7 @@ body {
 
 }
 
-.folder.opened {
+.folder.opened .icon {
     background-image: url('img/open-folder-xp.png');
 }
 
@@ -116,7 +115,8 @@ body {
     font-size: 12px;
     cursor: context-menu;
 }
-.context hr{
+
+.context hr {
     margin: 3px 0;
 }
 
@@ -126,7 +126,7 @@ body {
 }
 
 .context li + li {
-   /* border-top: 1px solid #333;*/
+    /* border-top: 1px solid #333;*/
 }
 
 .info {
@@ -136,5 +136,51 @@ body {
     border: 1px solid #000;
     position: absolute;
     background-color: #fff;
+}
 
+.openFolder {
+    position: absolute;
+    z-index: 100000;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    width: 780px;
+    height: 580px;
+}
+
+.openFolder-header {
+    border-radius: 5px 5px 0 0;
+    height: 30px;
+    background: linear-gradient(to bottom, #3d9eff, #0160f8 10%, #0160f8 95%, #416195 95%);
+}
+
+.openFolder-main {
+    border-radius: 0 0 5px 5px;
+    border: 4px solid #0160f8;
+    border-top-width: 0;
+    background-color: #fff;
+}
+
+.openFolder-nav {
+    background-color: #efeee9;
+    height: 85px;
+    width: 100%;
+}
+
+.openFolder-body {
+    height: 470px;
+    display: flex;
+
+}
+
+.openFolder-aside {
+    max-width: 235px;
+    width: 100%;
+    background-color: #7aa1e6;
+}
+
+.openFolder-inner {
+    max-width: 540px;
+    width: 100%;
+    background-color: #fff;
 }

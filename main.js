@@ -4,25 +4,41 @@ desktop.setAttribute('data-context', 'desktop')
 const desktopContextMenu = [['Упорядочить значки', 'Обновить'], ['Вставить', 'Вставить ярлык'], ['Создать'], ['Свойства']]
 let selectedItem, highlight
 let cursordownX, cursordownY, highlightPointX, highlightPointY
-let screenOffsetX = (window.innerWidth - desktop.offsetWidth)/2,
-    screenOffsetY = (window.innerHeight - desktop.offsetHeight)/2
-
+let screenOffsetX = (window.innerWidth - desktop.offsetWidth) / 2,
+  screenOffsetY = (window.innerHeight - desktop.offsetHeight) / 2
 
 
 const clickFoldersHandler = event => {
-  if (document.querySelector('.highlighted')) {
-    document.querySelector('.highlighted').classList.remove('highlighted')
+  console.dir(event)
+  const closestFolder = event.target.closest('.folder')
+
+  if (!event.target.closest('.folder').classList.contains('highlighted')) {
+    if(document.querySelector('.highlighted')){
+      document.querySelector('.highlighted').classList.remove('highlighted')
+    }
+    closestFolder.classList.add('highlighted')
+    closestFolder.addEventListener('mousedown', renameHandler)
   }
-  event.target.closest('.folder').classList.add('highlighted')
+
+  // if(event.target.closest('.folder').classList.contains('highlighted'))
+    //document.querySelector('.highlighted').classList.remove('highlighted')
+    //event.target.removeEventListener('click', renameHandler)
+  //event.target.addEventListener('click', renameHandler)
 
 
+}
+const renameHandler = event => {
+  //console.dir(event)
+  if(event.target.tagName === 'span'){
+    alert('dick')
+  }
 }
 const dblclickFoldersHandler = event => {
   event.target.closest('.folder').classList.toggle('opened')
+  openFolder()
 
 }
 const mouseUpHandler = event => {
-  console.log(event.target)
   desktop.removeEventListener('mousemove', mouseMoveHandler)
 }
 const moveAt = (offsetX, offsetY) => {
@@ -34,7 +50,7 @@ const moveAt = (offsetX, offsetY) => {
 }
 const mouseMoveHandler = (event) => {
   console.dir(event)
-  moveAt(event.pageX - screenOffsetX, event.pageY -screenOffsetY)
+  moveAt(event.pageX - screenOffsetX, event.pageY - screenOffsetY)
 
 }
 const mousedownHandler = event => {
@@ -70,7 +86,6 @@ const highlightHandler = event => {
 }
 
 const highlightMoveHandler = event => {
-
 
 
   //if (event.target.id === 'desktop') {
@@ -158,9 +173,23 @@ const deleteContextMenu = () => {
   if (desktop.querySelector('.context')) desktop.querySelector('.context').remove()
 }
 
+const openFolder = () => {
+  const openFolder = document.createElement('div')
+  openFolder.className = 'openFolder'
+  openFolder.innerHTML = `<div class="openFolder-header"></div>
+                          <div class="openFolder-main">
+                            <div class="openFolder-nav"></div>
+                            <div class="openFolder-body">
+                                <div class="openFolder-aside"></div>
+                                <div class="openFolder-inner"></div>
+                            </div>
+                          </div>`
+  desktop.append(openFolder)
+}
+
 
 folders.forEach(folder => folder.addEventListener('mousedown', mousedownHandler))
-folders.forEach(folder => folder.addEventListener('click', clickFoldersHandler));
+//folders.forEach(folder => folder.addEventListener('click', highlightFoldersHandler));
 folders.forEach(folder => folder.addEventListener('dblclick', dblclickFoldersHandler));
 desktop.addEventListener('mousedown', highlightHandler)
 document.addEventListener('click', clickWindowHandler)
