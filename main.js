@@ -1,11 +1,34 @@
-const folders = document.querySelectorAll('.folder')
+let folders = document.querySelectorAll('.folder')
 const desktop = document.getElementById('desktop')
 desktop.setAttribute('data-context', 'desktop')
 const desktopContextMenu = [['Упорядочить значки', 'Обновить'], ['Вставить', 'Вставить ярлык'], ['Создать'], ['Свойства']]
+const desktopInner = [
+  {
+    type: 'folder',
+    title: 'New folder',
+    inner: {},
+  },
+  {
+    type: 'folder',
+    title: 'Folder 2',
+    inner: {},
+  },
+]
+const fileTypes = {
+  folder(title) {
+    return `<div class="folder">
+             <div class="icon"></div>
+            <div class="title">${title}</div>
+        </div>`
+  }
+}
 let selectedItem, highlight
 let cursordownX, cursordownY, highlightPointX, highlightPointY
 let screenOffsetX = (window.innerWidth - desktop.offsetWidth) / 2,
   screenOffsetY = (window.innerHeight - desktop.offsetHeight) / 2
+
+
+renderDesktop()
 
 
 const selectFoldersHandler = event => {
@@ -220,6 +243,13 @@ const openFolder = () => {
   desktop.append(openFolder)
 }
 
+function renderDesktop() {
+  desktopInner.map(item => {
+    desktop.insertAdjacentHTML('afterbegin', `${fileTypes[item.type](item.title)}`)
+  })
+  folders = document.querySelectorAll('.folder')
+}
+
 
 folders.forEach(folder => folder.addEventListener('mousedown', mousedownHandler))
 //folders.forEach(folder => folder.addEventListener('click', highlightFoldersHandler));
@@ -227,5 +257,4 @@ folders.forEach(folder => folder.addEventListener('dblclick', dblclickFoldersHan
 desktop.addEventListener('mousedown', highlightHandler)
 document.addEventListener('click', clickWindowHandler)
 document.addEventListener('contextmenu', contextMenuHandler)
-
 
