@@ -8,45 +8,66 @@ let screenOffsetX = (window.innerWidth - desktop.offsetWidth) / 2,
   screenOffsetY = (window.innerHeight - desktop.offsetHeight) / 2
 
 
-const clickFoldersHandler = event => {
-  console.dir(event)
+const selectFoldersHandler = event => {
   const closestFolder = event.target.closest('.folder')
+  const curentSelected = document.querySelector('.highlighted')
 
   if (!event.target.closest('.folder').classList.contains('highlighted')) {
-    if(document.querySelector('.highlighted')){
-      document.querySelector('.highlighted').classList.remove('highlighted')
+    if (curentSelected) {
+      curentSelected.removeEventListener('mousedown', renameHandler)
+      curentSelected.classList.remove('highlighted')
     }
     closestFolder.classList.add('highlighted')
     closestFolder.addEventListener('mousedown', renameHandler)
   }
 
-  // if(event.target.closest('.folder').classList.contains('highlighted'))
-    //document.querySelector('.highlighted').classList.remove('highlighted')
-    //event.target.removeEventListener('click', renameHandler)
-  //event.target.addEventListener('click', renameHandler)
-
 
 }
 const renameHandler = event => {
+  event.preventDefault()
+  console.log('tap')
+  const currentFolder = event.target.closest('.folder')
+  const submitTitleHandler = event => {
+
+    if (event === 'outsideClick' || event.charCode === 13) {
+
+      const input = document.querySelector('.rename')
+      const title = document.createElement('div')
+      title.className = 'title'
+
+      title.innerHTML = input.value
+      currentFolder.append(title)
+
+      document.removeEventListener('click', renameTouchOut)
+      if (!event.charCode) input.closest('.folder').removeEventListener('mousedown', renameHandler)
+
+      input.remove()
+    }
+  }
+  const renameTouchOut = event => {
+    if (!event.target.closest('.rename')) submitTitleHandler('outsideClick')
+  }
 
   let chosenTitle = event.target
-  if(chosenTitle.tagName === 'SPAN'){
+  if (chosenTitle.classList.contains('title')) {
 
-    chosenTitle.outerHTML = `<input value='${chosenTitle.innerHTML}' class='rename' autofocus>`
-    let chosenInput = document.querySelector('.rename')
+    let chosenInput = document.createElement('input')
+    chosenInput.className = 'rename'
+    chosenInput.setAttribute('value', chosenTitle.innerHTML)
+    chosenInput.setAttribute('autofocus', 'autofocus')
+    currentFolder.append(chosenInput)
+    chosenTitle.remove()
+    chosenInput.focus()
     chosenInput.select()
 
-
-   // console.log(chosenItem.outerHTML)
+    chosenInput.addEventListener('keypress', submitTitleHandler)
+    document.addEventListener('click', renameTouchOut)
   }
 }
 const dblclickFoldersHandler = event => {
   event.target.closest('.folder').classList.toggle('opened')
   openFolder()
 
-}
-const mouseUpHandler = event => {
-  desktop.removeEventListener('mousemove', mouseMoveHandler)
 }
 const moveAt = (offsetX, offsetY) => {
 
@@ -61,15 +82,20 @@ const mouseMoveHandler = (event) => {
 
 }
 const mousedownHandler = event => {
+  console.log(event.target)
+  console.dir(event.target.closest('.folder'))
   selectedItem = event.target.closest('.folder')
   selectedItem.ondragstart = () => false
   cursordownX = event.pageX - screenOffsetX - selectedItem.offsetLeft
   cursordownY = event.pageY - screenOffsetY - selectedItem.offsetTop
 
 
-  event.target.addEventListener('mouseup', mouseUpHandler)
+  desktop.addEventListener('mouseup', mouseUpHandler)
   desktop.addEventListener('mousemove', mouseMoveHandler)
-  clickFoldersHandler(event)
+  selectFoldersHandler(event)
+}
+const mouseUpHandler = event => {
+  desktop.removeEventListener('mousemove', mouseMoveHandler)
 }
 const highlightHandler = event => {
 
@@ -141,8 +167,12 @@ const highlightDelete = event => {
 }
 const clickWindowHandler = event => {
   if (event.target.id === 'desktop') {
+
     document.querySelectorAll('.highlight').forEach(highlight => highlight.remove())
-    document.querySelectorAll('.highlighted').forEach(element => element.classList.remove('highlighted'))
+    document.querySelectorAll('.highlighted').forEach(element => {
+      //element.removeEventListener('mousedown', renameHandler)
+      element.classList.remove('highlighted')
+    })
     deleteContextMenu()
   }
 }
@@ -150,13 +180,9 @@ const contextMenuHandler = event => {
   event.preventDefault()
   deleteContextMenu()
   renderContextMenu(event)
-
-
 }
 
 const renderContextMenu = (event) => {
-
-  console.dir(event)
   const element = event.target.closest(`[data-context='${event.target.dataset.context}']`)
   if (element) {
     const contextMenu = document.createElement('ul')
@@ -203,6 +229,3 @@ document.addEventListener('click', clickWindowHandler)
 document.addEventListener('contextmenu', contextMenuHandler)
 
 
-/*function resOut(res1, res2) {
-  desktop.querySelector('.info').textContent = res1.toString() + '\n\n' + res2.toString();
-}*/
